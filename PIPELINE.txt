@@ -1,0 +1,21 @@
+Opus 5.5 video pipeline
+
+What is in this project
+- prompts/ : 703 prompt files, one per video (slug.md)
+- data/videos.json : index. Fields: slug, author, post_url, category (motion 369, 3d 117, explainer 116, interactive 101), tech_tags, prompt, prompt_partial, has_remake, added
+- README.md : curated 100 plus latest prompts
+- No dependencies to install. Tooling needs node, playwright, ffmpeg, python3.
+
+Stages
+1. Find: python3 scripts/find_prompt.py <keywords> --cat explainer --complete --full
+2. Scaffold: python3 scripts/new_project.py <slug> <project-name>  (creates work/<name>/ with prompt.txt and brief.txt)
+3. Brief: fill brief.txt with topic, brand, duration, aspect ratio, palette, audio
+4. Generate: give Claude prompt.txt plus the brief, ask for one self-contained HTML file with a fixed-size stage and a timeline that autoplays and ends cleanly. Save as work/<name>/index.html
+5. Review: open in browser, check timing, text legibility, loop end
+6. Record: node scripts/record.js work/<name>/index.html work/<name>/out/<name>.mp4 <seconds> <w> <h>
+7. Deliver: keep html and mp4 together in work/<name>/out/
+
+Rules
+- Skip prompts with prompt_partial=true unless adapting loosely
+- Credit the original creator when reusing an idea
+- Vertical 1080x1920 for Reels, TikTok; 1920x1080 for YouTube, LinkedIn
